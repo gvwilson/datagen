@@ -10,10 +10,10 @@ import sys
 from pydantic import BaseModel
 
 
-def ensure_id_generator(cls, stem, digits):
+def ensure_id_generator(cls):
     """Ensure class has ID generator."""
     if not hasattr(cls, "_id_gen"):
-        cls._id_gen = id_gen(stem, digits)
+        cls._id_gen = id_gen(cls.id_stem, cls.id_digits)
 
 
 @contextmanager
@@ -51,8 +51,7 @@ def json_dump(obj, indent=2):
 def random_date(params):
     """Select random date in range (inclusive)."""
     days = (params.sample_date_max - params.sample_date_min).days
-    days = random.randint(0, days + 1)
-    return params.sample_date_min + timedelta(days=days)
+    return params.sample_date_min + timedelta(days=random.randint(0, days))
 
 
 def random_mass(params):

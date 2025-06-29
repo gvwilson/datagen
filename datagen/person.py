@@ -1,6 +1,7 @@
 """Represent scientific staff."""
 
 import random
+from typing import ClassVar
 
 import faker
 from pydantic import BaseModel, Field
@@ -11,6 +12,9 @@ from . import utils
 class Person(BaseModel):
     """A single person."""
 
+    id_stem: ClassVar[str] = "P"
+    id_digits: ClassVar[int] = 4
+
     id: str = Field(min_length=1, description="unique identifier")
     family: str = Field(min_length=1, description="family name")
     personal: str = Field(min_length=1, description="personal name")
@@ -18,7 +22,7 @@ class Person(BaseModel):
     @staticmethod
     def make(params):
         """Make a person."""
-        utils.ensure_id_generator(Person, "P", 4)
+        utils.ensure_id_generator(Person)
         if not hasattr(Person, "_fake"):
             Person._fake = faker.Faker(params.locale)
             Person._fake.seed_instance(random.randint(0, 1_000_000))

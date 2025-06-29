@@ -1,6 +1,7 @@
 """Sample grids."""
 
 import random
+from typing import ClassVar
 
 from pydantic import BaseModel, Field
 
@@ -14,6 +15,9 @@ MOVES = [[-1, 0], [1, 0], [0, -1], [0, 1]]
 class Grid(BaseModel):
     """Create and fill an integer grid."""
 
+    id_stem: ClassVar[str] = "G"
+    id_digits: ClassVar[int] = 4
+
     id: str = Field(min_length=1, description="unique ID")
     size: int = Field(
         gt=0,
@@ -24,7 +28,7 @@ class Grid(BaseModel):
     @staticmethod
     def make(params):
         """Make a grid."""
-        utils.ensure_id_generator(Grid, "G", 4)
+        utils.ensure_id_generator(Grid)
         grid = Grid(id=next(Grid._id_gen), size=params.grid_size)
         grid.fill()
         return grid

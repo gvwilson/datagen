@@ -2,6 +2,7 @@
 
 from datetime import date
 import random
+from typing import ClassVar
 
 from pydantic import BaseModel, Field
 
@@ -10,6 +11,9 @@ from . import utils
 
 class Sample(BaseModel):
     """Represent a single sample."""
+
+    id_stem: ClassVar[str] = "S"
+    id_digits: ClassVar[int] = 4
 
     id: str = Field(min_length=1, description="unique ID")
     grid: str = Field(min_length=1, description="grid ID")
@@ -22,7 +26,7 @@ class Sample(BaseModel):
     @staticmethod
     def make(params, grids, persons):
         """Make a sample."""
-        utils.ensure_id_generator(Sample, "S", 4)
+        utils.ensure_id_generator(Sample)
         grid = random.choice(grids)
         x = random.randint(0, grid.size - 1)
         y = random.randint(0, grid.size - 1)
