@@ -1,0 +1,7 @@
+*.egg-info
+*~
+.*.bkp
+.DS_Store
+.\#*
+.venv
+__pycache__

@@ -1,0 +1,16 @@
+[project]
+name = "datagen"
+version = "0.0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "faker",
+    "pydantic"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff"
+]
+
+[project.scripts]
+datagen = "datagen.main:main"
