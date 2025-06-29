@@ -27,14 +27,8 @@ class Sample(BaseModel):
         x = random.randint(0, grid.size - 1)
         y = random.randint(0, grid.size - 1)
         person = random.choice(persons)
-        when = utils.random_date(params.sample_date_min, params.sample_date_max)
-        mass = round(
-            random.uniform(
-                params.sample_mass_min,
-                params.sample_mass_max,
-            ),
-            params.precision,
-        )
+        when = utils.random_date(params)
+        mass = utils.random_mass(params)
         return Sample(
             id=next(Sample._id_gen),
             grid=grid.id,

@@ -6,6 +6,7 @@ from pathlib import Path
 import random
 import sys
 
+from .effects import do_all_effects
 from .grid import Grid
 from .parameters import Parameters
 from .person import Person
@@ -20,13 +21,12 @@ def main():
     if args.defaults:
         print(utils.json_dump(Parameters()))
         return 0
-    elif not args.outdir:
-        print("output directory not specified (use --outdir name)", file=sys.stderr)
-        return 1
 
     params = _initialize(args)
     grids, persons, samples = _synthesize(params)
-    _save(args, grids, persons, samples)
+    changes = do_all_effects(params, grids, persons, samples)
+    if args.outdir:
+        _save(args, grids, persons, samples, changes)
 
     return 0
 
@@ -55,21 +55,27 @@ def _parse_args():
     return parser.parse_args()
 
 
-def _save(args, grids, persons, samples):
+def _save(args, grids, persons, samples, changes):
     """Save synthesized data."""
-    outdir = Path(args.outdir)
-    if not outdir.is_dir():
-        outdir.mkdir(exist_ok=True)
+    if args.outdir == "-":
+        outdir = None
+    else:
+        outdir = Path(args.outdir)
+        if not outdir.is_dir():
+            outdir.mkdir(exist_ok=True)
 
     for g in grids:
-        with open(outdir / f"{g.id}.csv", "w") as writer:
+        with utils.file_or_std(outdir, f"{g.id}.csv", "w") as writer:
             print(g, file=writer)
 
     for name, cls, data in (("persons", Person, persons), ("samples", Sample, samples)):
-        with open(outdir / f"{name}.csv", "w") as writer:
+        with utils.file_or_std(outdir, f"{name}.csv", "w") as writer:
             print(cls.csv_header(), file=writer)
             for record in data:
                 print(record, file=writer)
+
+    with utils.file_or_std(outdir, "changes.json", "w") as writer:
+        json.dump(changes, writer)
 
 
 def _synthesize(params):

@@ -5,6 +5,7 @@
 PYTHON = uv run python
 PYTHON_M = uv run python -m
 SRC = datagen
+SCRIPT = datagen
 
 ## commands: show available commands
 commands:
@@ -13,6 +14,10 @@ commands:
 ## clean: clean up build artifacts
 clean:
 	@find . -name '*~' -delete
+
+## dryrun: run data generation but do not save results
+dryrun:
+	${SCRIPT}
 
 ## format: reformat code
 format:

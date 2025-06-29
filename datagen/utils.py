@@ -1,8 +1,11 @@
 """Data generation utilities."""
 
+from contextlib import contextmanager
 from datetime import date, timedelta
 import json
+from pathlib import Path
 import random
+import sys
 
 from pydantic import BaseModel
 
@@ -11,6 +14,23 @@ def ensure_id_generator(cls, stem, digits):
     """Ensure class has ID generator."""
     if not hasattr(cls, "_id_gen"):
         cls._id_gen = id_gen(stem, digits)
+
+
+@contextmanager
+def file_or_std(parent, filename, mode):
+    """Open file and return handle or return stdin/stdout."""
+    if parent:
+        stream = open(Path(parent, filename), mode)
+        try:
+            yield stream
+        finally:
+            stream.close()
+    elif mode == "r":
+        yield sys.stdin
+    elif mode == "w":
+        yield sys.stdout
+    else:
+        raise ValueError(f"bad filename/mode '{filename}' / '{mode}'")
 
 
 def id_gen(stem, digits):
@@ -28,11 +48,16 @@ def json_dump(obj, indent=2):
     return json.dumps(obj, indent=indent, default=_serialize_json)
 
 
-def random_date(date_min, date_max):
+def random_date(params):
     """Select random date in range (inclusive)."""
-    days = (date_max - date_min).days
+    days = (params.sample_date_max - params.sample_date_min).days
     days = random.randint(0, days + 1)
-    return date_min + timedelta(days=days)
+    return params.sample_date_min + timedelta(days=days)
+
+
+def random_mass(params):
+    """Generate random sample mass."""
+    return random.uniform(params.sample_mass_min, params.sample_mass_max,)
 
 
 def _serialize_json(obj):
