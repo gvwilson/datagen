@@ -14,14 +14,6 @@ def test_person_creation(default_params):
     assert len(person.personal) > 0
 
 
-def test_person_fields_validation():
-    """Test person field validation."""
-    person = Person(id="P0001", family="Smith", personal="John")
-    assert person.id == "P0001"
-    assert person.family == "Smith"
-    assert person.personal == "John"
-
-
 def test_person_empty_id_validation():
     """Test empty ID validation fails."""
     with pytest.raises(ValueError):

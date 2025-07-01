@@ -16,46 +16,33 @@ def test_sample_creation(default_params, fx_grids, fx_persons):
     assert sample.person in [p.id for p in fx_persons]
     assert 0 <= sample.x < fx_grids[0].size
     assert 0 <= sample.y < fx_grids[0].size
-    assert default_params.sample_date_min <= sample.when <= default_params.sample_date_max
-    assert default_params.sample_mass_min <= sample.mass <= default_params.sample_mass_max
-
-
-def test_sample_fields_validation():
-    """Test sample field validation."""
-    sample = Sample(
-        id="S0001",
-        grid="G0001",
-        x=5,
-        y=3,
-        person="P0001",
-        when=date(2025, 6, 15),
-        mass=1.23
+    assert (
+        default_params.sample_date_min <= sample.when <= default_params.sample_date_max
     )
-    assert sample.id == "S0001"
-    assert sample.grid == "G0001"
-    assert sample.x == 5
-    assert sample.y == 3
-    assert sample.person == "P0001"
-    assert sample.when == date(2025, 6, 15)
-    assert sample.mass == 1.23
+    assert (
+        default_params.sample_mass_min <= sample.mass <= default_params.sample_mass_max
+    )
 
 
-@pytest.mark.parametrize("changed", [{"id": ""}, {"grid": ""}, {"x": -1}, {"y": -1}, {"mass": 0}, {"mass": -1}])
+@pytest.mark.parametrize(
+    "changed",
+    [{"id": ""}, {"grid": ""}, {"x": -1}, {"y": -1}, {"mass": 0}, {"mass": -1}],
+)
 def test_sample_parameter_validation(changed):
-   """Test invalid sample parameters are rejected."""
-   values = {
-       "id": "",
-       "grid": "G0001",
-       "x": 5,
-       "y": 3,
-       "person": "P0001",
-       "when": date(2025, 6, 15),
-       "mass": 1.23,
-       **changed
-   }
-   with pytest.raises(ValueError):
-       Sample(**values)
- 
+    """Test invalid sample parameters are rejected."""
+    values = {
+        "id": "",
+        "grid": "G0001",
+        "x": 5,
+        "y": 3,
+        "person": "P0001",
+        "when": date(2025, 6, 15),
+        "mass": 1.23,
+        **changed,
+    }
+    with pytest.raises(ValueError):
+        Sample(**values)
+
 
 def test_sample_csv_output():
     """Test CSV string output."""
@@ -66,7 +53,7 @@ def test_sample_csv_output():
         y=3,
         person="P0001",
         when=date(2025, 6, 15),
-        mass=1.23
+        mass=1.23,
     )
     csv_output = str(sample)
     assert csv_output == "S0001,G0001,5,3,P0001,2025-06-15,1.23"

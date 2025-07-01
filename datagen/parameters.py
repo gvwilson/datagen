@@ -28,8 +28,12 @@ class Parameters(BaseModel):
     sample_date_max: date = Field(
         default=date(2025, 3, 31), description="sampling end date"
     )
-    pollution_factor: float = Field(default=0.3, gt=0, description="pollution effect on mass")
-    clumsy_factor: float = Field(default=0.5, gt=0, description="clumsy operator effect on mass")
+    pollution_factor: float = Field(
+        default=0.3, gt=0, description="pollution effect on mass"
+    )
+    clumsy_factor: float = Field(
+        default=0.5, gt=0, description="clumsy operator effect on mass"
+    )
 
     @model_validator(mode="after")
     def validate_locale(self):

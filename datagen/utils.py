@@ -56,7 +56,10 @@ def random_date(params):
 
 def random_mass(params):
     """Generate random sample mass."""
-    return random.uniform(params.sample_mass_min, params.sample_mass_max,)
+    return random.uniform(
+        params.sample_mass_min,
+        params.sample_mass_max,
+    )
 
 
 def _serialize_json(obj):

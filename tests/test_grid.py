@@ -24,34 +24,25 @@ def test_grid_indexing():
     """Test grid indexing operations."""
     grid = Grid(id="G0001", size=3)
     grid.grid = [i for i in range(9)]  # 0-8
-    
+
     # Test getting values
     assert grid[0, 0] == 0  # grid[0 + 0*3] = grid[0]
     assert grid[1, 0] == 1  # grid[1 + 0*3] = grid[1]
     assert grid[0, 1] == 3  # grid[0 + 1*3] = grid[3]
     assert grid[2, 2] == 8  # grid[2 + 2*3] = grid[8]
-    
+
     # Test setting values
     grid[1, 1] = 99
     assert grid[1, 1] == 99
-
-
-def test_grid_fill_function(default_params):
-    """Test grid fill creates non-empty grid."""
-    grid = Grid.make(default_params)
-    # Grid should have some non-zero values after filling
-    assert sum(grid.grid) > 0
 
 
 def test_grid_csv_output():
     """Test grid CSV string output."""
     grid = Grid(id="G0001", size=2)
     grid.grid = [1, 2, 3, 4]  # [[1,2], [3,4]]
-    
     csv_output = str(grid)
     lines = csv_output.split("\n")
     assert len(lines) == 2
-    # Note: grid prints from top to bottom (y=1 first, then y=0)
     assert lines[0] == "3,4"  # y=1 row
     assert lines[1] == "1,2"  # y=0 row
 

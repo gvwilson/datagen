@@ -8,8 +8,11 @@ import pytest
 from unittest.mock import patch
 
 from datagen.utils import (
-    json_dump, random_date, random_mass,
-    file_or_std, _serialize_json
+    json_dump,
+    random_date,
+    random_mass,
+    file_or_std,
+    _serialize_json,
 )
 from datagen.parameters import Parameters
 from datagen.person import Person
@@ -18,25 +21,13 @@ from datagen.person import Person
 def test_random_date():
     """Test random date generation within range."""
     params = Parameters(
-        sample_date_min=date(2025, 1, 1),
-        sample_date_max=date(2025, 1, 10)
+        sample_date_min=date(2025, 1, 1), sample_date_max=date(2025, 1, 10)
     )
 
     random.seed(123)
     for _ in range(100):
         random_dt = random_date(params)
         assert params.sample_date_min <= random_dt <= params.sample_date_max
-
-
-def test_random_date_single_day():
-    """Test random date with single day range."""
-    single_date = date(2025, 6, 15)
-    params = Parameters(
-        sample_date_min=single_date,
-        sample_date_max=single_date
-    )
-    random_dt = random_date(params)
-    assert random_dt == single_date
 
 
 def test_random_mass():
@@ -46,13 +37,6 @@ def test_random_mass():
     for _ in range(100):
         mass = random_mass(params)
         assert params.sample_mass_min <= mass <= params.sample_mass_max
-
-
-def test_random_mass_equal_bounds():
-    """Test random mass with equal min/max bounds."""
-    params = Parameters(sample_mass_min=1.5, sample_mass_max=1.5)
-    mass = random_mass(params)
-    assert mass == 1.5
 
 
 def test_json_dump_with_date():

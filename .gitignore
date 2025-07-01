@@ -3,5 +3,6 @@
 .*.bkp
 .DS_Store
 .\#*
+.coverage
 .venv
 __pycache__

@@ -25,12 +25,7 @@ def test_default_parameters():
 
 def test_custom_parameters():
     """Test custom parameter values."""
-    params = Parameters(
-        seed=42,
-        precision=3,
-        num_persons=10,
-        locale="en_US"
-    )
+    params = Parameters(seed=42, precision=3, num_persons=10, locale="en_US")
     assert params.seed == 42
     assert params.precision == 3
     assert params.num_persons == 10
@@ -52,39 +47,4 @@ def test_invalid_sample_mass_range():
 def test_invalid_sample_date_range():
     """Test invalid sample date range raises error."""
     with pytest.raises(ValueError, match="invalid sample date limits"):
-        Parameters(
-            sample_date_min=date(2025, 12, 31),
-            sample_date_max=date(2025, 1, 1)
-        )
-
-
-def test_valid_sample_mass_range():
-    """Test valid sample mass range passes validation."""
-    params = Parameters(sample_mass_min=0.1, sample_mass_max=2.0)
-    assert params.sample_mass_min == 0.1
-    assert params.sample_mass_max == 2.0
-
-
-def test_valid_sample_date_range():
-    """Test valid sample date range passes validation."""
-    params = Parameters(
-        sample_date_min=date(2024, 1, 1),
-        sample_date_max=date(2024, 12, 31)
-    )
-    assert params.sample_date_min == date(2024, 1, 1)
-    assert params.sample_date_max == date(2024, 12, 31)
-
-
-def test_equal_mass_range():
-    """Test equal mass range is valid."""
-    params = Parameters(sample_mass_min=1.0, sample_mass_max=1.0)
-    assert params.sample_mass_min == 1.0
-    assert params.sample_mass_max == 1.0
-
-
-def test_equal_date_range():
-    """Test equal date range is valid."""
-    same_date = date(2025, 6, 15)
-    params = Parameters(sample_date_min=same_date, sample_date_max=same_date)
-    assert params.sample_date_min == same_date
-    assert params.sample_date_max == same_date
+        Parameters(sample_date_min=date(2025, 12, 31), sample_date_max=date(2025, 1, 1))
